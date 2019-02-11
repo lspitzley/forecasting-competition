@@ -38,3 +38,6 @@ README.html
 forecasting-competition.Rproj
 
 \.DS_Store
+last_ten_alb.rds
+*.png
+forecasting_introduction.html

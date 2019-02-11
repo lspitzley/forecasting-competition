@@ -1,0 +1,77 @@
+---
+title: "Forecasting Competition -- Getting Started"
+author: "Lee Spitzley"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Overview
+This document contains some basic intructions to get you started with the 
+forecasting competition.
+
+You will want the `GSODR`, `ggplot2`, `lubridate` libraries to run this lab.
+
+```{r packages}
+library(GSODR)
+library(ggplot2)
+library(lubridate)
+```
+Also, include the helpful forecast functions I made that will help you format your forecasts.
+```{r}
+source('forecast_functions.R')
+```
+# Data
+```{r download, eval=FALSE}
+last_ten_years <-  get_GSOD(years = 2009:2019, station = '725180-14735')
+saveRDS(object = last_ten_years, file = 'last_ten_alb.rds')
+```
+
+```{r read_cached, cache=TRUE, echo=FALSE}
+last_ten_years = readRDS('last_ten_alb.rds')
+```
+
+Show the data for the last ten years.
+```{r visual, cache=FALSE, warning=FALSE, message=FALSE}
+qplot(x = last_ten_years$YEARMODA, y = last_ten_years$MAX)
+
+yoy <- ggplot(last_ten_years, aes(x=YDAY, y=MAX, color=YEAR))
+yoy + geom_point() + geom_smooth()
+```
+
+# Starting Your Forecast
+Get the dates that you want to predict `eval.dates` and the previous 
+week `start_prev_seven`, which is one way to create your predictions.
+```{r}
+prediction_start <- Sys.Date() + days(1)
+start_prev_seven <- prediction_start - days(7)
+eval.dates <- seq(prediction_start, prediction_start + 6, by='days')
+eval_df_base <- as.data.frame(eval.dates)
+print(eval_df_base)
+```
+
+# An example using the previous seven days.
+
+```{r prev_seven_mean}
+forecast_name <- 'mean_prev_seven'
+prev_seven <- subset(last_ten_years, YEARMODA >= start_prev_seven & 
+                       YEARMODA < prediction_start)
+mean.max <- mean(prev_seven$MAX) 
+mean.min <- mean(prev_seven$MIN)
+
+pred.df.list <- list()
+pred.df.list[['max']] <- forecast_df_builder(eval.dates, 'mean_prev_seven', 'MAX', 
+                                             rep(mean.max, 7))
+pred.df.list[['min']] <- forecast_df_builder(eval.dates, 'mean_prev_seven', 
+                                             'MIN', rep(mean.min, 7))
+pred.df <- do.call(rbind, pred.df.list)
+print(pred.df)
+```
+
