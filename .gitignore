@@ -36,3 +36,5 @@ vignettes/*.pdf
 rsconnect/
 README.html
 forecasting-competition.Rproj
+
+\.DS_Store

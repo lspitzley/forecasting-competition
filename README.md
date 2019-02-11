@@ -31,9 +31,9 @@ download the latest weather data. We will use the Albany Internation Airport
 as the location for the weather data and forecasts. The station ID is `725180-14735`.
 
 # Forecasts
-You should submit the forecasts for the daily high temparature (MAX),
-daily low temperature (MIN), the probability of rain (P_RAIN) and the
-probability of snow (P_SNOW). 
+You should submit the forecasts for the daily high temparature (`MAX`),
+daily low temperature (`MIN`), the probability of precipitation (`P_PRCP`). Preciptation
+will be have occurred when the value of the `PRCP` column is greater than `0.00`.
 
 # Submission Format
 
@@ -47,8 +47,8 @@ Example:
 |------------|-----------|----------|-------------|
 | 2019-02-04 | lspitzley | MAX      | 5.5776      |
 | 2019-02-04 | lspitzley | MIN      | -0.5468     |
-| 2019-02-04 | lspitzley | P_RAIN   | 0.2556      |
-| 2019-02-04 | lspitzley | P_SNOW   | 0.1445      |
+| 2019-02-04 | lspitzley | P_PRCP   | 0.2556      |
+
 
 
 # Evaluation
