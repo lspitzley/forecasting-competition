@@ -11,6 +11,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+
 ```
 
 # Overview
@@ -19,7 +21,7 @@ forecasting competition.
 
 You will want the `GSODR`, `ggplot2`, `lubridate` libraries to run this lab.
 
-```{r packages}
+```{r packages, message=FALSE}
 library(GSODR)
 library(ggplot2)
 library(lubridate)
@@ -29,10 +31,25 @@ Also, include the helpful forecast functions I made that will help you format yo
 source('forecast_functions.R')
 ```
 # Data
+You can download the data from GSOD using the format below.
 ```{r download, eval=FALSE}
 last_ten_years <-  get_GSOD(years = 2009:2019, station = '725180-14735')
 saveRDS(object = last_ten_years, file = 'last_ten_alb.rds')
 ```
+
+It is often faster to just download all of the data once,
+and then append the newest data to the end of the dataframe.
+
+```{r append, eval=FALSE}
+last_ten_years <- readRDS('last_ten_alb.rds')
+current_year <- get_GSOD(years = 2019, station = '725180-14735')
+new_rows <- subset(current_year, !(YEARMODA %in% last_ten_years$YEARMODA))
+last_ten_years <- rbind(last_ten_years, new_rows)
+last_ten_years$I_PRCP <- ifelse(last_ten_years$PRCP > 0, 1, 0)
+saveRDS(object = last_ten_years, file = 'last_ten_alb.rds')
+```
+
+Storing data in the `rds` format preserves column data types and other metadata.
 
 ```{r read_cached, cache=TRUE, echo=FALSE}
 last_ten_years = readRDS('last_ten_alb.rds')
@@ -49,29 +66,37 @@ yoy + geom_point() + geom_smooth()
 # Starting Your Forecast
 Get the dates that you want to predict `eval.dates` and the previous 
 week `start_prev_seven`, which is one way to create your predictions.
-```{r}
+```{r get_dates, echo=1:4}
 prediction_start <- Sys.Date() + days(1)
 start_prev_seven <- prediction_start - days(7)
 eval.dates <- seq(prediction_start, prediction_start + 6, by='days')
 eval_df_base <- as.data.frame(eval.dates)
-print(eval_df_base)
+prediction_start <- date('2019-02-03') + days(1)
+start_prev_seven <- prediction_start - days(7)
+eval.dates <- seq(prediction_start, prediction_start + 6, by='days')
+eval_df_base <- as.data.frame(eval.dates)
+kable(eval_df_base)
 ```
 
-# An example using the previous seven days.
+# Example Forecast
+Predict the future temperature as the average of the last seven days.
 
-```{r prev_seven_mean}
+```{r prev_seven_mean, echo=1:11}
 forecast_name <- 'mean_prev_seven'
 prev_seven <- subset(last_ten_years, YEARMODA >= start_prev_seven & 
                        YEARMODA < prediction_start)
 mean.max <- mean(prev_seven$MAX) 
 mean.min <- mean(prev_seven$MIN)
+mean.prcp <- mean(prev_seven$I_PRCP)
 
 pred.df.list <- list()
 pred.df.list[['max']] <- forecast_df_builder(eval.dates, 'mean_prev_seven', 'MAX', 
                                              rep(mean.max, 7))
 pred.df.list[['min']] <- forecast_df_builder(eval.dates, 'mean_prev_seven', 
                                              'MIN', rep(mean.min, 7))
+pred.df.list[['i_prcp']] <- forecast_df_builder(eval.dates, 'mean_prev_seven', 
+                                             'I_PRCP', rep(mean.prcp, 7))
 pred.df <- do.call(rbind, pred.df.list)
-print(pred.df)
+kable(pred.df, digits = 4, caption = "Predicted max, min, and precipitation")
 ```
 
