@@ -35,7 +35,15 @@ You should submit the forecasts for the daily high temparature (`MAX`),
 daily low temperature (`MIN`), the probability of precipitation (`P_PRCP`). Preciptation
 will be have occurred when the value of the `PRCP` column is greater than `0.00`.
 
+The baseline prediction is named `mean_prev_seven`. It is simply the average temperature
+from the last seven days.
+
 # Submission Format
+
+The submissions must be in a CSV file formatted exactly as the
+values in the tables below. The easiest way to acheive this
+format is to build your forecasts with the `baseline_predictions.R`
+file. Modify the code in that file to include your forecasting technique.
 
 | fc.date    | fc.name   | fc.var   | fc.value    |
 |------------|-----------|----------|-------------|
@@ -49,13 +57,19 @@ Example:
 | 2019-02-04 | lspitzley | MIN      | -0.5468     |
 | 2019-02-04 | lspitzley | P_PRCP   | 0.2556      |
 
-
+You can test your format by running your forecasts through the
+`forecast_evaluation.R` script.
 
 # Evaluation
 
-Continuous forecasts will be evaluated with functions from the `forecast` package.
-Binary predictions will be scored with standard methods and those contained in
+Continuous forecasts are evaluated with functions from the `forecast` package.
+Binary predictions are scored with standard methods and those contained in
 the `scoring` package. 
+
+The `forecast_evaluation.R` script reports scores to the console and to
+a `.csv` file in the `output/` directory. 
+
+
 
 
 

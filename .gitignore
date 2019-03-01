@@ -37,7 +37,16 @@ rsconnect/
 README.html
 forecasting-competition.Rproj
 
+# local files
 \.DS_Store
-last_ten_alb.rds
 *.png
 forecasting_introduction.html
+forecasts/desktop.ini
+
+# data files
+last_ten_alb.rds
+!forecasts/*baseline.csv
+forecasts/Forecast*
+forecasts/2019-02-11_forecast_lspitzley_submitted.csv
+forecasts/2019-02-18_forecast_lspitzley_submitted.csv
+forecasts/2019-02-25_forecast_lspitzley_submitted.csv
