@@ -4,7 +4,7 @@ library(ggplot2) # make nice plots
 library(lubridate)
 library(reshape2)
 library(forecast)
-source('competition/forecast_functions.R')
+source('forecast_functions.R')
 
 last_ten_years <-readRDS('last_ten_alb.rds')
 
@@ -34,4 +34,4 @@ pred.df.list[['prcp']] <- forecast_df_builder(eval.dates, 'mean_prev_seven',
 
 
 pred.df <- do.call(rbind, pred.df.list)
-write.csv(pred.df, paste0(prediction_start, '_forecast_baseline.csv'))
+write.csv(pred.df, paste0('output/', prediction_start, '_forecast_baseline.csv'))

@@ -1,4 +1,4 @@
-"","fc.dates","fc.name","fc.var","fc.value"
+"","fc.date","fc.name","fc.var","fc.value"
 "max.1",2019-02-25,"mean_prev_seven","MAX",2.31428571428571
 "max.2",2019-02-26,"mean_prev_seven","MAX",2.31428571428571
 "max.3",2019-02-27,"mean_prev_seven","MAX",2.31428571428571
@@ -6,13 +6,13 @@
 "max.5",2019-03-01,"mean_prev_seven","MAX",2.31428571428571
 "max.6",2019-03-02,"mean_prev_seven","MAX",2.31428571428571
 "max.7",2019-03-03,"mean_prev_seven","MAX",2.31428571428571
-"min.1",2019-02-25,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.2",2019-02-26,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.3",2019-02-27,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.4",2019-02-28,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.5",2019-03-01,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.6",2019-03-02,"mean_prev_seven","P_PRCP",0.714285714285714
-"min.7",2019-03-03,"mean_prev_seven","P_PRCP",0.714285714285714
+"min.1",2019-02-25,"mean_prev_seven","MIN",-8.34285714285714
+"min.2",2019-02-26,"mean_prev_seven","MIN",-8.34285714285714
+"min.3",2019-02-27,"mean_prev_seven","MIN",-8.34285714285714
+"min.4",2019-02-28,"mean_prev_seven","MIN",-8.34285714285714
+"min.5",2019-03-01,"mean_prev_seven","MIN",-8.34285714285714
+"min.6",2019-03-02,"mean_prev_seven","MIN",-8.34285714285714
+"min.7",2019-03-03,"mean_prev_seven","MIN",-8.34285714285714
 "prcp.1",2019-02-25,"mean_prev_seven","P_PRCP",0.714285714285714
 "prcp.2",2019-02-26,"mean_prev_seven","P_PRCP",0.714285714285714
 "prcp.3",2019-02-27,"mean_prev_seven","P_PRCP",0.714285714285714

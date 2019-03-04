@@ -1,8 +1,6 @@
-<header>
 BFOR 416/516 Forecasting Competition
 ====================================
-</header>
-<main>
+
 
 
 # Overview
@@ -69,8 +67,7 @@ the `scoring` package.
 The `forecast_evaluation.R` script reports scores to the console and to
 a `.csv` file in the `output/` directory. 
 
+The RMSE will be the primary scoring metric for the temperature predictions.
+Log loss and AUC are the primary metrics for precipitation predictions.
 
 
-
-
-</main>
