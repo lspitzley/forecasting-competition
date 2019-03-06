@@ -2,6 +2,7 @@
 library(reshape2)
 library(forecast)
 library(plyr)
+library(lubridate)
 source('forecast_functions.R')
 
 # load files into a single data frame
@@ -38,6 +39,7 @@ for (week in week_beginning) {
   week_of <- date(week)
   print(week_of)
   week_prediction <- subset(pred_eval, fixed.date >= week_of &fixed.date <= week_of + days(6))
+  if (nrow(week_prediction) == 0) break
   unique_entries <- as.data.frame(unique(week_prediction[,c('fc.name', 'fc.var')]))
   temperature_entries <- subset(unique_entries, !is.na(fc.name) & fc.var %in% c('MAX', 'MIN'))
   precip_entries <- subset(unique_entries, !is.na(fc.name) & fc.var == 'I_PRCP')
