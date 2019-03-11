@@ -9,7 +9,8 @@ source('forecast_functions.R')
 last_ten_years <- readRDS('last_ten_alb.rds')
 
 file_list <- list.files('forecasts/', pattern = '*.csv')
-raw_files <- lapply(file_list, function(x) read.csv(paste0('forecasts/', x), stringsAsFactors = FALSE))
+raw_files <- lapply(file_list, function(x) {print(x)
+  read.csv(paste0('forecasts/', x), stringsAsFactors = FALSE)})
 pred.df <- do.call(rbind.fill, raw_files)
 
 #### DATA CLEANING -----------------------------------------------------------------------------
