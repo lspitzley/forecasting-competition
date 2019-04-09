@@ -8,7 +8,7 @@ source('forecast_functions.R')
 # load files into a single data frame
 last_ten_years <- readRDS('last_ten_alb.rds')
 
-file_list <- list.files('forecasts/', pattern = '*.csv')
+file_list <- list.files('forecasts/', pattern = '.csv|.CSV')
 raw_files <- lapply(file_list, function(x) {print(x)
   read.csv(paste0('forecasts/', x), stringsAsFactors = FALSE)})
 pred.df <- do.call(rbind.fill, raw_files)
@@ -25,6 +25,14 @@ pred.df[which(pred.df$fc.var == 'P_PRCP' | pred.df$fc.var == 'PRCP'), 'fc.var'] 
 # clean up bad values
 pred.df$fc.value <- as.numeric(pred.df$fc.value)
 
+# adjust names to be lowercase
+pred.df$fc.name <- tolower(pred.df$fc.name)
+
+# clean up columns and remove duplicates
+fc.cols <- c('fc.name', 'fc.var', 'fixed.date', 'fc.value')
+pred.df <- pred.df[complete.cases(pred.df[,fc.cols]),fc.cols]
+pred.df <- pred.df[!duplicated(pred.df[,c('fc.name', 'fc.var', 'fixed.date')]),]
+
 ##### merge historical data with predictions  --------------------------------------------------
 eval_df <- melt(data = last_ten_years, id.vars = c('YEARMODA'), 
                 measure.vars = c('MAX', 'MIN', 'I_PRCP'), 
@@ -35,7 +43,8 @@ pred_eval <- merge(x = pred.df, y=eval_df,
 
 #### evaluate by entry/week --------------------------------------------------------------------
 
-week_beginning <- c('2019-02-11', '2019-02-18', '2019-02-25', '2019-03-04')
+week_beginning <- c('2019-02-11', '2019-02-18', '2019-02-25', '2019-03-04', '2019-03-11', 
+                    '2019-03-18', '2019-03-25', '2019-04-02')
 for (week in week_beginning) {
   week_of <- date(week)
   print(week_of)
