@@ -37,6 +37,9 @@ rsconnect/
 README.html
 forecasting-competition.Rproj
 
+# Spyder files
+.spyproject/
+
 # local files
 \.DS_Store
 *.png
