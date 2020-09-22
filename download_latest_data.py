@@ -28,7 +28,7 @@ import sys
 #%% globals/arguments
 location = '12222'
 start_date = '2020-06-01'
-end_date = '2020-12-31'
+end_date = '2020-08-31'
 # https://www.ncdc.noaa.gov/cdo-web/token
 mytoken = 'cjDBSyJxHNVYtFnEOtvUCFlvYXaDAxsV'
 
@@ -39,12 +39,12 @@ lastyear = datetime.datetime.now()-datetime.timedelta(days=365)
 
 #Use the same begin and end date for just one day's data. Format for the API request
 begin_date = lastyear.strftime("%Y-%m-%d")
-end_date = lastyear.strftime("%Y-%m-%d")
+end_date = datetime.date.today()
 
 #Location key for the region you are interested in (can be found on NOAA or requested as a different API as well)
 locationid = 'FIPS:36' #location id for North Dakota
 stationid = 'GHCND:US1NYAB0001'
-datasetid = 'GHCND' #datset id for "Daily Summaries"
+datasetid = 'GSOD' #datset id for "Daily Summaries"
 
 
 
@@ -55,18 +55,22 @@ base_url_stations = 'https://www.ncdc.noaa.gov/cdo-web/api/v2/stations'
 
 
 #%% download latest data
-'''
+
 n = noaa.NOAA()
 #alb = n.get_forecasts('12203', 'US', False)
 
-observations = n.get_observations(location,'US',start=start_date,end=end_date)   
-'''
+observations = n.get_observations(location, 'US')   
 
+
+for obs in observations:
+    print(obs)
+
+#%%
 def get_weather(locationid, datasetid, begin_date, end_date, mytoken, base_url):
     token = {'token': mytoken}
 
     #passing as string instead of dict because NOAA API does not like percent encoding
-    params = 'datasetid='+str(datasetid)+'&'+'stationid='+str(locationid)+'&'+'startdate='+str(begin_date)+'&'+'enddate='+str(end_date)+'&'+'limit=25'+'&'+'units=standard'
+    params = 'datasetid='+str(datasetid)+'&'+'stationid='+str(locationid)+'&'+'startdate='+str(begin_date)+'&'+'enddate='+str(end_date)+'&'+'limit=1000'+'&'+'units=standard'
     
     r = requests.get(base_url, params = params, headers=token)
     print("Request status code: "+str(r.status_code))
@@ -113,13 +117,10 @@ def get_station_info(locationid, datasetid, mytoken, base_url):
 
 
 #%% clean data
-'''
-for obs in observations:
-    print(obs)
-    
-'''
 
 
+
+#%%
 df_weather = get_weather(stationid, datasetid, begin_date, end_date, mytoken, base_url_data)
 
 df_weather.head()
@@ -131,7 +132,7 @@ df_stations.head()
 
 
 
-
+#%%
 df = df_weather.merge(df_stations, left_on = 'station', right_on = 'id', how='inner')
 
 #Check for missing overlap between station weather info and location info
