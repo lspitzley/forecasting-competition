@@ -17,8 +17,6 @@ with open(filepath, 'r') as f:
 # post data to Slack
 token = keys['token']
 print(token)
-# user token
-# token = 'xoxp-1298717147878-1305653727251-1389468075488-510ca987ecbe0b2ce3bde055220d2d67'
 
 #%% upload forecast file to Slack
 def upload_forecast_file(token):
