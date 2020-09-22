@@ -48,13 +48,14 @@ forecasts/desktop.ini
 
 # data files
 last_ten_alb.rds
+last_ten_alb.csv
 !forecasts/*baseline.csv
 forecasts/Forecast*
 forecasts/2019-02-11_forecast_lspitzley_submitted.csv
 forecasts/2019-02-18_forecast_lspitzley_submitted.csv
 forecasts/2019-02-25_forecast_lspitzley_submitted.csv
 forecasts/2019-03-04_forecast_2019-03-04_submitted.csv
-*.csv
+# forecasts/*.csv
 *.rds
 tokens.yaml
 *.pyc
