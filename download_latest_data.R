@@ -15,6 +15,6 @@ current_year$I_PRCP <- ifelse(current_year$PRCP > 0, 1, 0)
 new_rows <- subset(current_year, !(YEARMODA %in% last_ten_years$YEARMODA))
 last_ten_years <- rbind(last_ten_years, new_rows)
 saveRDS(object = last_ten_years, file = 'last_ten_alb.rds')
-
+write.csv(last_ten_years, 'last_ten_alb.csv')
 
 
