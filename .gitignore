@@ -59,3 +59,4 @@ forecasts/2019-03-04_forecast_2019-03-04_submitted.csv
 *.rds
 tokens.yaml
 *.pyc
+*.zip
