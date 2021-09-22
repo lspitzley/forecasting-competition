@@ -7,6 +7,8 @@ Created on Sat Jun 13 21:58:26 2020
 Script to download daily historical data from 
 the NOAA. 
 
+
+
 https://github.com/paulokuong/noaa
 
 https://gettecr.github.io/noaa-api.html
@@ -26,9 +28,9 @@ import os
 import sys
 
 #%% globals/arguments
-location = '12222'
-start_date = '2020-06-01'
-end_date = '2020-08-31'
+location = '12110'
+start_date = '2021-06-01'
+end_date = '2021-09-22'
 # https://www.ncdc.noaa.gov/cdo-web/token
 mytoken = 'cjDBSyJxHNVYtFnEOtvUCFlvYXaDAxsV'
 
@@ -57,9 +59,9 @@ base_url_stations = 'https://www.ncdc.noaa.gov/cdo-web/api/v2/stations'
 #%% download latest data
 
 n = noaa.NOAA()
-#alb = n.get_forecasts('12203', 'US', False)
+#alb = n.get_forecasts('12222', 'US', False)
 
-observations = n.get_observations(location, 'US')   
+observations = n.get_observations(location, 'US', start=begin_date)   
 
 
 for obs in observations:
