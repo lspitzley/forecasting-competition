@@ -56,6 +56,22 @@ eval_dates = pd.date_range(prediction_start, periods=7).tolist()
 
 
 #%% create training subset
+"""
+In this example, I am only using the last seven days of data
+to create a training set. 
+
+A more sophisticated method would be the use of lagged variables.
+For example, sea level pressure (SLP) could be useful in predictions.
+You would then include the previous day's pressure in a column (SLP_1)
+and you could also go back further (as many days as you would like). 
+
+If using this method, predicting further than one day into the future will 
+either require a separate model, or interpolation of the lagged measures
+that are empty.
+"""
+
+
+
 train_dates = pd.date_range(start_prev_seven, periods=7)
 train_data = last_ten_alb.loc[last_ten_alb['YEARMODA'].isin(train_dates)]
 
