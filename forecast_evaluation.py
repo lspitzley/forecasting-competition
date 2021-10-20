@@ -11,6 +11,7 @@ First part is integrity checks
 import os
 import re
 import pandas as pd
+from datetime import datetime, timedelta
 from sklearn import metrics
 
 
@@ -62,3 +63,13 @@ df_all = df_all.drop_duplicates(['fc_date', 'fc_name', 'fc_var'], keep='first')
 
 
 #%% actual data
+last_ten_alb = pd.read_csv('last_ten_alb.csv')
+
+# set YEARMODA (Year-month-day) to datetime format
+last_ten_alb['YEARMODA'] = pd.to_datetime(last_ten_alb['YEARMODA'])
+print("Most recent date in data:", last_ten_alb['YEARMODA'].max())
+
+eval_start = datetime.strptime('2021-09-29', "%Y-%m-%d")
+
+#%% get relevant columns into merged dataframe
+
