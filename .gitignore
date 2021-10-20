@@ -60,3 +60,4 @@ forecasts/2019-03-04_forecast_2019-03-04_submitted.csv
 tokens.yaml
 *.pyc
 *.zip
+tmp/isd-history.csv
