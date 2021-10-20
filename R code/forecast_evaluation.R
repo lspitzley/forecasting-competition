@@ -46,7 +46,7 @@ pred_eval <- merge(x = pred_df, y=eval_df,
 
 #### evaluate by entry/week --------------------------------------------------------------------
 
-week_beginning <- c('2020-09-30', '2020-10-07', '2020-10-14')
+week_beginning <- c('2021-09-29', '2021-10-06', '2021-10-13')
 for (week in week_beginning) {
   week_of <- date(week)
   print(week_of)
@@ -80,7 +80,7 @@ for (week in week_beginning) {
 }
 
 #### overall predictions ----------------------------------------------------------------------
-full_prediction <- subset(pred_eval, fixed_date >= date('2020-09-30'))
+full_prediction <- subset(pred_eval, fixed_date >= date('2021-09-29'))
 
 unique_entries <- as.data.frame(unique(full_prediction[,c('fc_name', 'fc_var')]))
 temperature_entries <- subset(unique_entries, !is.na(fc_name) & fc_var %in% c('MAX', 'MIN'))

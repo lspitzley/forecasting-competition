@@ -28,10 +28,16 @@ forecast_files = [s for s in os.listdir(forecast_dir) if s.lower().endswith('.cs
 raw_dfs = []
 df_all = pd.DataFrame(columns=column_names)
 for file in forecast_files:
-    print(file)
+    # print(file)
     try:
         df = pd.read_csv(forecast_dir + file)
         
+        # fix common misspellings
+        if 'fc.date' in df.columns:
+            df.rename(columns={"fc.date": 'fc_date'}, inplace=True)
+            
+        if 'fc_values' in df.columns:
+            df.rename(columns={"fc_values": 'fc_value'}, inplace=True)
         # strip any other column except those needed
         df = df.loc[:, column_names]
         # check that all are there
@@ -45,6 +51,7 @@ for file in forecast_files:
         df_all = df_all.append(df, ignore_index=True)
     except KeyError:
         print("Invalid column names in", file, "Columns must be", column_names)
+        print("Included names were", list(df))
         
     except MissingColumnError:
         print("dataframe missing column(s).", file)
