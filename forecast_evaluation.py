@@ -166,7 +166,7 @@ for forecast in unique_forecasts:
 
 
 #%% 
-result_table.to_csv('output/scores_as_of_' + str(datetime.today()))
+result_table.to_csv('output/scores_as_of_' + str(datetime.today()) + '.csv')
 
 
 #%% plot roc
