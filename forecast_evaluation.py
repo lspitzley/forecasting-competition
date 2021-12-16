@@ -58,7 +58,7 @@ df_all = pd.DataFrame(columns=column_names)
 for file in forecast_files:
     # print(file)
     try:
-        df = pd.read_csv(forecast_dir + file)
+        df = pd.read_csv(forecast_dir + file, infer_datetime_format=True)
         
         # fix common misspellings
         if 'fc.date' in df.columns:
@@ -175,7 +175,9 @@ for forecast in unique_forecasts:
 
 
 #%% 
-result_table.to_csv('output/scores_as_of_' + str(datetime.today()) + '.csv')
+
+as_of = datetime.today().strftime("%Y-%m-%d")
+result_table.to_csv('output/scores_as_of_' + as_of + '.csv')
 
 
 #%% plot roc
