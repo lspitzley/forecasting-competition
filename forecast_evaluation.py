@@ -73,9 +73,13 @@ for file in forecast_files:
             raise MissingColumnError()
             
         df['fc_date'] =pd.to_datetime(df['fc_date'])
+        # df['fc_date'] = df['fc_date'].apply(fix_date)
         
         # check the values in fc_var
         df['fc_var'] = fix_prcp(df['fc_var'])
+        
+        # make values numeric
+        df['fc_value'] = df['fc_value'].apply(pd.to_numeric, errors='coerce')
         
         # drop missing values
         df.dropna(subset=column_names, inplace=True)
@@ -123,7 +127,11 @@ unique_forecasts = merged['fc_name'].unique()
 for forecast in unique_forecasts:
     print(forecast)
     
+    # get count of forecasts for grading purposes (probably could be cleaner)
+    
     single_forecast = merged.loc[(merged['fc_name'] == forecast)]
+    n_days = len(single_forecast['fc_date'].unique())
+    
     
     yproba = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'fc_value']
     yclass = np.where(yproba >= 0.5, 1, 0)
@@ -149,8 +157,8 @@ for forecast in unique_forecasts:
     max_pred = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'fc_value']
     max_obsv = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'MAX']
     
-    min_error = metrics.mean_squared_error(min_obsv, min_pred)
-    max_error = metrics.mean_squared_error(min_obsv, min_pred)
+    min_error = metrics.mean_squared_error(min_obsv, min_pred, squared=False)
+    max_error = metrics.mean_squared_error(max_obsv, max_pred, squared=False)
     
     result_table = result_table.append({'fc_name': forecast,
                                     'fpr':fpr, 
@@ -162,7 +170,8 @@ for forecast in unique_forecasts:
                                     'accuracy': accuracy,
                                     'f1_score': fscore,
                                     'min_RMSE': min_error,
-                                    'max_RMSE': max_error}, ignore_index=True)
+                                    'max_RMSE': max_error,
+                                    'n_days': n_days}, ignore_index=True)
 
 
 #%% 
