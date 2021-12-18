@@ -117,7 +117,8 @@ class GSOD(object):
             except IOError as err:
                 print('Cannot find isd-history.csv on the disk...')
                 self.wx_list_flag = True
-                self._ISDwXstationSlist()
+                df_isd = self._ISDwXstationSlist()
+                return df_isd
 
     def getAvailableWxStations(self):
         '''
