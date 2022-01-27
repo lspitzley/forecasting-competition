@@ -128,51 +128,55 @@ for forecast in unique_forecasts:
     print(forecast)
     
     # get count of forecasts for grading purposes (probably could be cleaner)
+    try:
+        single_forecast = merged.loc[(merged['fc_name'] == forecast)]
+        n_days = len(single_forecast['fc_date'].unique())
+        
+        # TODO drop a forecast if it has only one value - it causes later issues.
+        
+        yproba = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'fc_value']
+        yclass = np.where(yproba >= 0.5, 1, 0)
+        yobsrv = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'I_PRCP']
+        
+        # auc information
     
-    single_forecast = merged.loc[(merged['fc_name'] == forecast)]
-    n_days = len(single_forecast['fc_date'].unique())
+        fpr, tpr, _ = metrics.roc_curve(yobsrv,  yproba)
+        auc = metrics.roc_auc_score(yobsrv, yproba)
     
-    
-    yproba = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'fc_value']
-    yclass = np.where(yproba >= 0.5, 1, 0)
-    yobsrv = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'I_PRCP']
-    
-    # auc information
-    fpr, tpr, _ = metrics.roc_curve(yobsrv,  yproba)
-    auc = metrics.roc_auc_score(yobsrv, yproba)
-    
-    # log loss
-    log_loss = metrics.log_loss(yobsrv, yproba)
-    
-    # cofusion matrix stats
-    precision = metrics.precision_score(yobsrv, yclass, zero_division=0)
-    recall = metrics.recall_score(yobsrv, yclass)
-    accuracy = metrics.accuracy_score(yobsrv, yclass)
-    fscore = metrics.f1_score(yobsrv, yclass)
-    
-    
-    # get RMSE for min & max
-    min_pred = single_forecast.loc[(single_forecast['fc_var'] == 'MIN'), 'fc_value']
-    min_obsv = single_forecast.loc[(single_forecast['fc_var'] == 'MIN'), 'MIN']
-    max_pred = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'fc_value']
-    max_obsv = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'MAX']
-    
-    min_error = metrics.mean_squared_error(min_obsv, min_pred, squared=False)
-    max_error = metrics.mean_squared_error(max_obsv, max_pred, squared=False)
-    
-    result_table = result_table.append({'fc_name': forecast,
-                                    'fpr':fpr, 
-                                    'tpr':tpr, 
-                                    'auc':auc,
-                                    'log_loss': log_loss,
-                                    'precision': precision,
-                                    'recall': recall,
-                                    'accuracy': accuracy,
-                                    'f1_score': fscore,
-                                    'min_RMSE': min_error,
-                                    'max_RMSE': max_error,
-                                    'n_days': n_days}, ignore_index=True)
-
+        
+        # log loss
+        log_loss = metrics.log_loss(yobsrv, yproba)
+        
+        # cofusion matrix stats
+        precision = metrics.precision_score(yobsrv, yclass, zero_division=0)
+        recall = metrics.recall_score(yobsrv, yclass)
+        accuracy = metrics.accuracy_score(yobsrv, yclass)
+        fscore = metrics.f1_score(yobsrv, yclass)
+        
+        
+        # get RMSE for min & max
+        min_pred = single_forecast.loc[(single_forecast['fc_var'] == 'MIN'), 'fc_value']
+        min_obsv = single_forecast.loc[(single_forecast['fc_var'] == 'MIN'), 'MIN']
+        max_pred = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'fc_value']
+        max_obsv = single_forecast.loc[(single_forecast['fc_var'] == 'MAX'), 'MAX']
+        
+        min_error = metrics.mean_squared_error(min_obsv, min_pred, squared=False)
+        max_error = metrics.mean_squared_error(max_obsv, max_pred, squared=False)
+        
+        result_table = result_table.append({'fc_name': forecast,
+                                        'fpr':fpr, 
+                                        'tpr':tpr, 
+                                        'auc':auc,
+                                        'log_loss': log_loss,
+                                        'precision': precision,
+                                        'recall': recall,
+                                        'accuracy': accuracy,
+                                        'f1_score': fscore,
+                                        'min_RMSE': min_error,
+                                        'max_RMSE': max_error,
+                                        'n_days': n_days}, ignore_index=True)
+    except ValueError:
+        print("there was an error in forecast:", forecast)
 
 #%% 
 
