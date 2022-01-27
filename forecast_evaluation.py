@@ -128,6 +128,7 @@ for forecast in unique_forecasts:
     print(forecast)
     
     # get count of forecasts for grading purposes (probably could be cleaner)
+
     try:
         single_forecast = merged.loc[(merged['fc_name'] == forecast)]
         n_days = len(single_forecast['fc_date'].unique())
@@ -139,7 +140,6 @@ for forecast in unique_forecasts:
         yobsrv = single_forecast.loc[(single_forecast['fc_var'] == 'P_PRCP'), 'I_PRCP']
         
         # auc information
-    
         fpr, tpr, _ = metrics.roc_curve(yobsrv,  yproba)
         auc = metrics.roc_auc_score(yobsrv, yproba)
     
@@ -177,6 +177,7 @@ for forecast in unique_forecasts:
                                         'n_days': n_days}, ignore_index=True)
     except ValueError:
         print("there was an error in forecast:", forecast)
+
 
 #%% 
 
