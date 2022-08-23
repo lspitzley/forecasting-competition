@@ -283,7 +283,7 @@ class GSOD(object):
                         'prcp', 'prcp_f', 'snow_depth', 'fog_f', 'rain_or_drizzle_f', 'snow_or_ice_pellets_f', 'hail_f', 'thunder_f', 'tornado_f']
 
             # Set precision
-            pd.set_option('precision', 3)
+            pd.set_option('display.precision', 3)
 
             # Create dataframe from matrix object
             df = pd.DataFrame(data=mat, columns=headers)

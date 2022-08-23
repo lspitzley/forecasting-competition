@@ -28,6 +28,6 @@ from utilities import gsod_scraper
 
 gsod = gsod_scraper.GSOD()
 
-last_ten_alb = gsod.get_data(station='725180-14735', start_year=2011, end=2021)
+last_ten_alb = gsod.get_data(station='725180-14735', start_year=2012, end=2022)
 
 last_ten_alb.to_csv('last_ten_alb.csv')
